@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class Row {
 
-    private static Map<String, String> attributeValues;
+    private Map<String, String> attributeValues;
     private String displayName;
     private List<String> attributeAccesses;
 

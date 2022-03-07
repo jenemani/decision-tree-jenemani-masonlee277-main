@@ -1,12 +1,11 @@
 package sol;
 
+import src.ITreeNode;
 import src.Row;
 
-public class Leaf implements ITreeNode{
+public class Leaf implements ITreeNode {
 
     public String finalDecision;
-    public ITreeNode parent;
-
     // we need to know how to represent edges
     // the edges are the attribute values that either lead to nodes or leafs
     //

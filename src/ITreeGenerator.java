@@ -13,7 +13,7 @@ public interface ITreeGenerator<D extends IDataset> {
      * @param trainingData    the dataset to train on
      * @param targetAttribute the attribute to predict
      */
-    public void generateTree(D trainingData, String targetAttribute);
+    void generateTree(D trainingData, String targetAttribute);
 
     /**
      * Looks up the decision for a datum in the decision tree.
@@ -21,5 +21,5 @@ public interface ITreeGenerator<D extends IDataset> {
      * @param datum the datum to lookup a decision for
      * @return the decision of the row
      */
-    public String getDecision(Row datum);
+    String getDecision(Row datum);
 }

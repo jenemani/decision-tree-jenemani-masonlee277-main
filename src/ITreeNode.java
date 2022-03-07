@@ -11,5 +11,5 @@ public interface ITreeNode {
      * @param forDatum the datum to lookup a decision for
      * @return the decision tree's decision
      */
-    public String getDecision(Row forDatum);
+    String getDecision(Row forDatum);
 }

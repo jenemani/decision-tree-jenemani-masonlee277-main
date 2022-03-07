@@ -7,6 +7,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.junit.Before;
 import src.DecisionTreeCSVParser;
+import src.DecisionTreeTester;
 import src.Row;
 
 import java.util.ArrayList;
@@ -21,15 +22,20 @@ public class DecisionTreeTest {
     
     @Test
     public void testExample() {
-        List<Row> rows = DecisionTreeCSVParser.parse("/Users/isaacjenemann/Desktop/cs200/projects/decision-tree-jenemani-masonlee277-main/data/mushrooms/training.csv");
+        List<Row> rows = DecisionTreeCSVParser.parse("/Users/isaacjenemann/Desktop/cs200/projects/decision-tree-jenemani-masonlee277-main/data/smol.csv");
         List<String> atts = new ArrayList<>(rows.get(0).getAttributes());
-        Dataset villians = new Dataset(rows, atts);
-        System.out.println(villians.dataList.get(100).getAttributeValue("capShape"));
-        System.out.println(villians.dataList.get(0).getAttributeValue("capShape"));
-        System.out.println(villians.dataList.get(10).getAttributeValue("capShape"));
-        System.out.println(villians.dataList.get(55).getAttributeValue("capShape"));
+        Dataset mushrooms = new Dataset(atts, rows);
+        TreeGenerator generator = new TreeGenerator();
+        generator.generateTree(mushrooms,"Animal");
+        Row dog = new Row("dog");
+/**
+        dog.setAttributeValue("Size", "Big");
+        dog.setAttributeValue("Fur", "Rough");
+        dog.setAttributeValue("Ears", "Floppy");
+        dog.setAttributeValue("Tail", "Long");
+        generator.getDecision(dog);
+        System.out.println(generator.getDecision(dog));
+ **/
     }
-
-    // TODO: Add your tests here!
-    
+    // TODO: Add your tests here
 }

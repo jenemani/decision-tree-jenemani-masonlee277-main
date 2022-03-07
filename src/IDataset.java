@@ -13,19 +13,19 @@ public interface IDataset {
      *
      * @return a list of strings
      */
-    public List<String> getAttributeList();
+    List<String> getAttributeList();
 
     /**
      * Gets list of data objects (row) in the dataset
      *
      * @return a list of Rows
      */
-    public List<Row> getDataObjects();
+    List<Row> getDataObjects();
 
     /**
      * finds the size of the dataset (number of rows)
      *
      * @return the number of rows in the dataset
      */
-    public int size();
+     int size();
 }

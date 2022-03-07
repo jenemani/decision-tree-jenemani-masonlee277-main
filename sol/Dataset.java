@@ -15,15 +15,21 @@ import java.util.List;
 public class Dataset implements IDataset {
     public List<String> attList;
     public List<Row> dataList;
+    public static String TARGET_ATT;
 
-    Dataset(List<Row> dataObjects, List<String> attributeList){
+    Dataset(List<String> attributeList, List<Row> dataObjects){
         this.dataList = dataObjects;
         this.attList = attributeList;
+        this.attList.remove(TARGET_ATT);
+    }
+
+    public static void setTargetAtt(String string){
+        TARGET_ATT = string;
     }
 
     @Override
     public List<String> getAttributeList() {
-        return this.attList;
+       return this.attList;
     }
 
     @Override
@@ -31,8 +37,7 @@ public class Dataset implements IDataset {
         return this.dataList;
     }
 
-    public ArrayList<String> getPosAttVals(String attValue){
-
+    public ArrayList<String> getEdges(String attValue){
         ArrayList<String> valueList = new ArrayList<>();
         for(Row r : this.dataList){
             String att = r.getAttributeValue(attValue);
@@ -48,53 +53,49 @@ public class Dataset implements IDataset {
        return this.dataList.size();
     }
 
-    public void remove(String str){
-        this.dataList.remove(str);
-    }
-
     // checks if all the values of the atts are the same
     // if the targetAtt values are different in subset then return false
-    public Boolean sameValue(String targetAtt){
-        String capShape  = this.dataList.get(5998).getAttributeValue("capShape");
-        String capSurface = this.dataList.get(100).getAttributeValue("capSurface");
-        String capColor= this.dataList.get(1000).getAttributeValue("capColor");
-        String string = this.dataList.get(2).getAttributeValue(targetAtt);
-
-        String str = this.dataList.get(6).getAttributeValue(targetAtt);
-        boolean bool = true;
-        for (Row row : this.dataList) {
-            if (row.getAttributeValue(targetAtt) != string){
-                bool = false;
-                break;
-            }
-
+    public Boolean isUniform(){
+        if(this.dataList.size() == 0 || this.dataList.size() == 1){
+            return true;
         }
-        return bool;
+
+        String string = this.dataList.get(0).getAttributeValue(TARGET_ATT);
+        for (Row row : this.dataList) {
+            if (!row.getAttributeValue(TARGET_ATT).equals(string)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public String leafValue(String targetAtt){
-        return this.dataList.get(1).getAttributeValue(targetAtt);
+    public String leafValue(){
+        return this.dataList.get(0).getAttributeValue(TARGET_ATT);
     }
 
-    public Dataset getSubset(String att, String attVal) {
+    public Dataset getSubset(String attribute, String attValue) {
         List<Row> d = this.dataList;
         List<String> newAttList = this.attList;
-        newAttList.remove(att);
-        List<Row> subset = new ArrayList<Row>();
+        newAttList.remove(attribute);
+        List<Row> subset = new ArrayList<>();
+
         for (Row r: d) {
-            if (r.getAttributeValue(att) == attVal) {
+            if (r.getAttributeValue(attribute).equals(attValue)) {
                 subset.add(r);
             }
-
         }
-        return new Dataset(subset, newAttList);
-    } // end of subset
+        this.attList = newAttList;
+        return new Dataset(newAttList, subset);
+    } //This splits the data given a specific attValue
 
-    public String getDefault(String tarAtt) {
+    public String getDefault() {
         HashMap<String, Integer> hm = new HashMap<String, Integer>();
             for (int i = 0; i < this.dataList.size()-1; i++) {
-                String attVal = this.dataList.get(i).getAttributeValue(tarAtt);
-                hm.put(attVal, hm.get(attVal) + 1);
+
+                String attVal = this.dataList.get(i).getAttributeValue(TARGET_ATT);
+                hm.merge(attVal, 1, Integer::sum);
+
             }
 
             List<String> posAttVals = new ArrayList<>(hm.keySet());
@@ -108,5 +109,12 @@ public class Dataset implements IDataset {
             return largest;
 
 
-    }
+    } //This gets the default targetAttribute value of the given dataset
+
+    public String getSplit(){
+        int min = 0;
+        int max = this.attList.size();
+        int random = (int) ((Math.random() * (max - min)) + min);
+        return this.attList.get(random);
+    } //This chooses a random attribute to split the data on
 } // end of class

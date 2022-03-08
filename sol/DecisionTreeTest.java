@@ -27,15 +27,45 @@ public class DecisionTreeTest {
         Dataset mushrooms = new Dataset(atts, rows);
         TreeGenerator generator = new TreeGenerator();
         generator.generateTree(mushrooms,"Animal");
-        Row dog = new Row("dog");
-/**
+        generator.generateTree(mushrooms,"Animal");
+        generator.generateTree(mushrooms,"Animal");
+        generator.generateTree(mushrooms,"Animal");
+        Row dog = new Row("Cygyghg");
+
         dog.setAttributeValue("Size", "Big");
         dog.setAttributeValue("Fur", "Rough");
         dog.setAttributeValue("Ears", "Floppy");
         dog.setAttributeValue("Tail", "Long");
         generator.getDecision(dog);
         System.out.println(generator.getDecision(dog));
- **/
+    }
+
+    @Test
+    public void testSongs(){
+        List<Row> rows = DecisionTreeCSVParser.parse("/Users/isaacjenemann/Desktop/cs200/projects/decision-tree-jenemani-masonlee277-main/data/songs/training.csv");
+        List<String> atts = new ArrayList<>(rows.get(0).getAttributes());
+        Dataset songs = new Dataset(atts, rows);
+        TreeGenerator generator = new TreeGenerator();
+        generator.generateTree(songs,"topGenre");
+        generator.generateTree(songs,"topGenre");
+        generator.generateTree(songs,"topGenre");
+        generator.generateTree(songs,"topGenre");
+
+
+
+
+        Row artPop = new Row("unknown");
+        artPop.setAttributeValue("year", "2002");
+        artPop.setAttributeValue("isHighEnergy", "FALSE");
+        artPop.setAttributeValue("isDanceable", "TRUE");
+        artPop.setAttributeValue("isLoud", "FALSE");
+        artPop.setAttributeValue("isLively", "FALSE");
+        artPop.setAttributeValue("isHighValence", "FALSE");
+        artPop.setAttributeValue("isAcoustic", "FALSE");
+        artPop.setAttributeValue("isSpeechy", "FALSE");
+        artPop.setAttributeValue("isPopular", "TRUE");
+        generator.getDecision(artPop);
+        System.out.println(generator.getDecision(artPop));
     }
     // TODO: Add your tests here
 }

@@ -14,38 +14,22 @@ import java.util.List;
  */
 public class Dataset implements IDataset {
     public List<String> attList;
+    private List<String> allAttributes;
     public List<Row> dataList;
     public static String TARGET_ATT;
 
-    Dataset(List<String> attributeList, List<Row> dataObjects){
+    /**
+     * Our constructor for the Dataset class
+     * @param attributeList the list of attributes with the targetAttribute removed
+     * @param dataObjects the rows of data within our CSV
+     */
+    public Dataset(List<String> attributeList, List<Row> dataObjects){
         this.dataList = dataObjects;
-        this.attList = attributeList;
-        this.attList.remove(TARGET_ATT);
+        this.attList = attributeList; // We remove the target attribute from the attList and from here only access the
     }
 
     public static void setTargetAtt(String string){
         TARGET_ATT = string;
-    }
-
-    @Override
-    public List<String> getAttributeList() {
-       return this.attList;
-    }
-
-    @Override
-    public List<Row> getDataObjects() {
-        return this.dataList;
-    }
-
-    public ArrayList<String> getEdges(String attValue){
-        ArrayList<String> valueList = new ArrayList<>();
-        for(Row r : this.dataList){
-            String att = r.getAttributeValue(attValue);
-            if (!valueList.contains(att)){
-                valueList.add(att);
-            }
-        }
-        return valueList;
     }
 
     @Override
@@ -70,13 +54,30 @@ public class Dataset implements IDataset {
         return true;
     }
 
-    public String leafValue(){
-        return this.dataList.get(0).getAttributeValue(TARGET_ATT);
+    @Override
+    public List<String> getAttributeList() {
+        return this.attList;
+    }
+
+    @Override
+    public List<Row> getDataObjects() {
+        return this.dataList;
+    }
+
+    public ArrayList<String> getEdges(String attValue){
+        ArrayList<String> valueList = new ArrayList<>();
+        for(Row r : this.dataList){
+            String att = r.getAttributeValue(attValue);
+            if (!valueList.contains(att)){
+                valueList.add(att);
+            }
+        }
+        return valueList;
     }
 
     public Dataset getSubset(String attribute, String attValue) {
-        List<Row> d = this.dataList;
-        List<String> newAttList = this.attList;
+        List<Row> d = new ArrayList<>(this.dataList);
+        List<String> newAttList = new ArrayList<>(this.attList);
         newAttList.remove(attribute);
         List<Row> subset = new ArrayList<>();
 
@@ -91,11 +92,9 @@ public class Dataset implements IDataset {
 
     public String getDefault() {
         HashMap<String, Integer> hm = new HashMap<String, Integer>();
-            for (int i = 0; i < this.dataList.size()-1; i++) {
-
+            for (int i = 0; i < this.dataList.size(); i++) {
                 String attVal = this.dataList.get(i).getAttributeValue(TARGET_ATT);
                 hm.merge(attVal, 1, Integer::sum);
-
             }
 
             List<String> posAttVals = new ArrayList<>(hm.keySet());

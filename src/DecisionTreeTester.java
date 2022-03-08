@@ -207,7 +207,7 @@ public class DecisionTreeTester<G extends ITreeGenerator<D>, D extends IDataset>
                 tester.getDecisionTreeAccuracy(trainingData, trainingData, IS_POISONOUS);
             System.out.println("Accuracy on training data: " + accuracy);
             VisualNode tree = tester.regenerateTreeFromTrainingData(trainingData);
-            TreeVisualizer.visualizeTree(tree);
+            //TreeVisualizer.visualizeTree(tree);
 
         } catch (InstantiationException | InvocationTargetException
             | NoSuchMethodException | IllegalAccessException e) {

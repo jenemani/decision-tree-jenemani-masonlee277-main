@@ -14,11 +14,14 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     ITreeNode tree;
 
    public void generateTree(Dataset trainingData, String targetAttribute) { // this is just for the root node
-       trainingData.setTargetAtt(targetAttribute);
-       if(trainingData.isUniform()) { // if all samples in dataset have same target att - make a leaf
-           this.tree = new Leaf(trainingData.leafValue());
+       Dataset.setTargetAtt(targetAttribute);
+       Dataset dataset = new Dataset(trainingData.getAttributeList(),trainingData.getDataObjects());
+       dataset.getAttributeList().remove(targetAttribute);
+
+       if(dataset.isUniform()) { // if all samples in dataset have same target att - make a leaf
+           this.tree = new Leaf(dataset.getDefault());
        } else{ // if the samples have different targetAtt values then lets make a node
-           this.tree= new Node(trainingData); // makes a new node with the fields used
+           this.tree= new Node(dataset); // makes a new node with the fields used
            this.tree = ((Node) this.tree).getTree(); // happens within the node class
        }
     }
